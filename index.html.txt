@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TN & DN Sneakers</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f8fb;
+  color: #03314b;
+}
+
+/* NAVBAR */
+header {
+  background: linear-gradient(90deg,#0bbf7a,#0b6fbf);
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+header h1 {
+  font-size: 24px;
+}
+
+header nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+/* HERO */
+.hero {
+  padding: 80px 20px;
+  text-align: center;
+  background: linear-gradient(135deg,#0bbf7a,#0b6fbf);
+  color: white;
+}
+
+.hero h2 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 18px;
+}
+
+/* PRODUTOS */
+.section {
+  padding: 50px 20px;
+}
+
+.section h3 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.produtos {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.card {
+  background: white;
+  width: 260px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card .info {
+  padding: 15px;
+}
+
+.card h4 {
+  margin-bottom: 5px;
+}
+
+.price {
+  color: #0bbf7a;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.card button {
+  width: 100%;
+  padding: 10px;
+  background: #0b6fbf;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* CARRINHO */
+#cart {
+  background: #e6f4fa;
+  padding: 30px;
+}
+
+#cart-items div {
+  margin-bottom: 8px;
+}
+
+#checkout {
+  margin-top: 15px;
+  padding: 12px;
+  background: #0bbf7a;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* FOOTER */
+footer {
+  background: #03314b;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>TN & DN Sneakers</h1>
+  <nav>
+    <a href="#prod">Produtos</a>
+    <a href="#cart">Carrinho (<span id="count">0</span>)</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Tênis que elevam seu estilo</h2>
+  <p>Qualidade, conforto e design premium</p>
+</section>
+
+<section class="section" id="prod">
+  <h3>Nossos Tênis</h3>
+  <div class="produtos">
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77">
+      <div class="info">
+        <h4>TN Verde Elite</h4>
+        <div class="price">R$ 299,90</div>
+        <button onclick="add('TN Verde Elite',299.9)">Adicionar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db">
+      <div class="info">
+        <h4>DN Azul Urban</h4>
+        <div class="price">R$ 329,90</div>
+        <button onclick="add('DN Azul Urban',329.9)">Adicionar</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1514989940723-e8e51635b782">
+      <div class="info">
+        <h4>TN/DN Fusion</h4>
+        <div class="price">R$ 349,90</div>
+        <button onclick="add('TN/DN Fusion',349.9)">Adicionar</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="cart">
+  <h3>Seu Carrinho</h3>
+  <div id="cart-items"></div>
+  <strong id="total">Total: R$ 0.00</strong><br>
+  <button id="checkout">Finalizar Compra</button>
+</section>
+
+<footer>
+  <p>TN & DN Sneakers © 2026</p>
+  <p>Loja demonstrativa — sem pagamento real</p>
+</footer>
+
+<script>
+let cart = [];
+const items = document.getElementById("cart-items");
+const total = document.getElementById("total");
+const count = document.getElementById("count");
+
+function add(name, price) {
+  cart.push({name, price});
+  render();
+}
+
+function render() {
+  items.innerHTML = "";
+  let sum = 0;
+  cart.forEach((p,i)=>{
+    sum += p.price;
+    items.innerHTML += `${p.name} - R$ ${p.price.toFixed(2)} 
+    <button onclick="remove(${i})">❌</button><br>`;
+  });
+  total.innerText = "Total: R$ " + sum.toFixed(2);
+  count.innerText = cart.length;
+}
+
+function remove(i) {
+  cart.splice(i,1);
+  render();
+}
+
+document.getElementById("checkout").onclick = ()=>{
+  if(cart.length===0){
+    alert("Carrinho vazio!");
+  } else {
+    alert("Compra simulada com sucesso!");
+    cart=[];
+    render();
+  }
+};
+</script>
+
+</body>
+</html>
